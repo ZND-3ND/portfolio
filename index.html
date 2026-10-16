@@ -16,7 +16,7 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0b0f19;
+            background-color: #07090e;
             color: #f3f4f6;
             overflow-x: hidden;
             cursor: none;
@@ -53,7 +53,7 @@
             z-index: 9999;
             transform: translate(-50%, -50%);
             transition: width 0.2s, height 0.2s, background-color 0.2s;
-            box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
+            box-shadow: 0 0 12px #3b82f6, 0 0 24px #3b82f6;
         }
 
         .cursor-outline {
@@ -74,38 +74,49 @@
             width: 12px;
             height: 12px;
             background-color: #60a5fa;
-            box-shadow: 0 0 15px #60a5fa, 0 0 25px #60a5fa;
+            box-shadow: 0 0 16px #60a5fa, 0 0 30px #60a5fa;
         }
 
         body.hovering .cursor-outline {
             width: 50px;
             height: 50px;
             border-color: rgba(96, 165, 250, 0.8);
-            background: rgba(59, 130, 246, 0.05);
+            background: rgba(59, 130, 246, 0.08);
         }
 
         .glass-card {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(11, 15, 25, 0.9));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .glass-card:hover {
-            border-color: rgba(59, 130, 246, 0.4);
-            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.45);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px rgba(59, 130, 246, 0.2);
+            transform: translateY(-3px);
         }
 
         .glow-text {
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            text-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .ambient-blob {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, rgba(147, 51, 234, 0.05) 50%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(60px);
         }
 
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0b0f19;
+            background: #07090e;
         }
         ::-webkit-scrollbar-thumb {
             background: #1f2937;
@@ -122,15 +133,15 @@
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-outline" id="cursor-outline"></div>
 
-    <!-- Background Canvas -->
+    <!-- Background Particles Canvas -->
     <canvas id="particle-canvas"></canvas>
 
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 w-full z-40 bg-gray-950/85 backdrop-blur-md border-b border-gray-800/50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-xl font-bold tracking-tight flex items-center gap-2 group">
-                <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
-                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
+                <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse shadow-lg shadow-blue-500/50"></span>
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">
                     MOHAMED SHABAN
                 </span>
             </a>
@@ -143,11 +154,16 @@
                 <a href="#contact" class="text-gray-300 hover:text-blue-400 transition-colors">Contact</a>
             </div>
 
-            <a href="#contact" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-all shadow-lg shadow-blue-600/25">
+            <a href="#contact" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white transition-all shadow-lg shadow-blue-600/30">
                 Let's Talk
             </a>
         </div>
     </nav>
+
+    <!-- Ambient Visual Glow Background Elements -->
+    <div class="ambient-blob top-20 left-10"></div>
+    <div class="ambient-blob top-[40%] right-10"></div>
+    <div class="ambient-blob bottom-20 left-1/3"></div>
 
     <!-- Main Content -->
     <main class="relative z-10 pt-28 px-6 max-w-5xl mx-auto space-y-32">
@@ -155,8 +171,8 @@
         <!-- Hero Section with Profile Image -->
         <section class="min-h-[80vh] flex flex-col-reverse lg:flex-row items-center justify-between gap-12 py-12">
             <div class="space-y-8 flex-1 text-left">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-950/60 border border-blue-800/40 text-blue-400 text-xs font-medium">
-                    <i class="fa-solid fa-graduation-cap"></i> Student at Future Academy (Egypt)
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-950/60 border border-blue-800/40 text-blue-400 text-xs font-medium shadow-inner">
+                    <i class="fa-solid fa-graduation-cap text-blue-400"></i> Student at Future Academy (Egypt)
                 </div>
 
                 <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none">
@@ -164,23 +180,24 @@
                 </h1>
 
                 <p class="text-gray-400 max-w-xl text-base sm:text-lg leading-relaxed">
-                    I am an 18-year-old student based in Giza, Egypt, specializing in 3D modeling, rendering, software programming with C++, and AI-driven workflows.
+                    I am an 18-year-old student based in Imbaba, Giza, Egypt, specializing in 3D modeling, rendering, software programming with C++, and AI-driven workflows.
                 </p>
 
                 <div class="flex flex-wrap gap-4 pt-2">
-                    <a href="#portfolio" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2">
+                    <a href="#portfolio" class="px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm transition-all shadow-xl shadow-blue-600/30 flex items-center gap-2">
                         <i class="fa-solid fa-cube"></i> Explore 3D Portfolio
                     </a>
                     <a href="#software" class="px-8 py-4 rounded-xl glass-card hover:bg-gray-800/60 text-white font-semibold text-sm transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-code"></i> Software Projects
+                        <i class="fa-solid fa-code text-purple-400"></i> Software Projects
                     </a>
                 </div>
             </div>
 
             <!-- Profile Picture Box -->
             <div class="relative flex-shrink-0">
-                <div class="w-64 h-64 sm:w-80 sm:h-80 rounded-full p-2 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 shadow-2xl shadow-blue-500/20">
-                    <div class="w-full h-full rounded-full overflow-hidden bg-gray-900 border-4 border-gray-950">
+                <div class="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-blue-600 via-purple-600 to-pink-600 opacity-75 blur-md animate-pulse"></div>
+                <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full p-2 bg-gray-950 shadow-2xl">
+                    <div class="w-full h-full rounded-full overflow-hidden bg-gray-900 border-2 border-gray-800">
                         <img src="profile.jpg" alt="Mohamed Shaban" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                     </div>
                 </div>
@@ -196,9 +213,11 @@
 
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="glass-card p-8 rounded-2xl space-y-4 md:col-span-2">
-                    <h3 class="text-2xl font-bold text-white">Who is Mohamed Shaban?</h3>
+                    <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-user-astronaut text-blue-400"></i> Who is Mohamed Shaban?
+                    </h3>
                     <p class="text-gray-300 leading-relaxed">
-                        I am a passionate technology student and 3D artist located in Omraniya, Giza. Currently studying at Future Academy, I bridge the gap between creative visual arts, 3D product rendering, and logical software development.
+                        I am a passionate technology student and 3D artist located in Imbaba, Giza. Currently studying at Future Academy, I bridge the gap between creative visual arts, 3D product rendering, and logical software development.
                     </p>
                     <p class="text-gray-400 leading-relaxed">
                         My primary focus revolves around producing realistic 3D assets, studio lighting, clean mesh topology, alongside responsive front-end applications, C++ programming, and AI-driven workflows.
@@ -206,17 +225,19 @@
                 </div>
 
                 <div class="glass-card p-8 rounded-2xl space-y-6">
-                    <h3 class="text-xl font-bold text-blue-400">Quick Info</h3>
+                    <h3 class="text-xl font-bold text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info"></i> Quick Info
+                    </h3>
                     <ul class="space-y-4 text-sm">
-                        <li class="flex items-center justify-between border-b border-gray-800 pb-2">
+                        <li class="flex items-center justify-between border-b border-gray-800/80 pb-2">
                             <span class="text-gray-400">Age</span>
                             <span class="font-medium text-white">18 Years</span>
                         </li>
-                        <li class="flex items-center justify-between border-b border-gray-800 pb-2">
+                        <li class="flex items-center justify-between border-b border-gray-800/80 pb-2">
                             <span class="text-gray-400">Location</span>
-                            <span class="font-medium text-white">Giza, Egypt</span>
+                            <span class="font-medium text-white">Imbaba, Giza, Egypt</span>
                         </li>
-                        <li class="flex items-center justify-between border-b border-gray-800 pb-2">
+                        <li class="flex items-center justify-between border-b border-gray-800/80 pb-2">
                             <span class="text-gray-400">Academy</span>
                             <span class="font-medium text-white">Future Academy</span>
                         </li>
@@ -274,7 +295,7 @@
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- C++ & Logic -->
                 <div class="glass-card p-8 rounded-2xl space-y-4">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl border border-purple-500/20">
                         <i class="fa-solid fa-terminal"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-white">C++ Development & Algorithms</h3>
@@ -282,15 +303,15 @@
                         Building robust console applications, problem-solving scripts, and high-performance structural logic using modern C++. Focuses on efficient memory management and algorithmic execution.
                     </p>
                     <div class="flex flex-wrap gap-2 pt-2">
-                        <span class="px-3 py-1 rounded-lg bg-gray-800 text-purple-300 text-xs">C++ Core</span>
-                        <span class="px-3 py-1 rounded-lg bg-gray-800 text-purple-300 text-xs">OOP</span>
-                        <span class="px-3 py-1 rounded-lg bg-gray-800 text-purple-300 text-xs">Data Structures</span>
+                        <span class="px-3 py-1 rounded-lg bg-gray-900 border border-gray-800 text-purple-300 text-xs">C++ Core</span>
+                        <span class="px-3 py-1 rounded-lg bg-gray-900 border border-gray-800 text-purple-300 text-xs">OOP</span>
+                        <span class="px-3 py-1 rounded-lg bg-gray-900 border border-gray-800 text-purple-300 text-xs">Data Structures</span>
                     </div>
                 </div>
 
                 <!-- Web & AI Integration -->
                 <div class="glass-card p-8 rounded-2xl space-y-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl border border-blue-500/20">
                         <i class="fa-solid fa-brain"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-white">Web UI & AI Workflows</h3>
@@ -298,9 +319,9 @@
                         Developing modern, responsive web interfaces using HTML, CSS, JavaScript, and Tailwind CSS. Integrating advanced AI-driven workflows and tools into daily development and creative processes.
                     </p>
                     <div class="flex flex-wrap gap-2 pt-2">
-                        <span class="px-3 py-1 rounded-lg bg-gray-800 text-blue-300 text-xs">HTML/CSS/JS</span>
-                        <span class="px-3 py-1 rounded-lg bg-gray-800 text-blue-300 text-xs">Tailwind CSS</span>
-                        <span class="px-3 py-1 rounded-lg bg-gray-800 text-blue-300 text-xs">AI Workflows</span>
+                        <span class="px-3 py-1 rounded-lg bg-gray-900 border border-gray-800 text-blue-300 text-xs">HTML/CSS/JS</span>
+                        <span class="px-3 py-1 rounded-lg bg-gray-900 border border-gray-800 text-blue-300 text-xs">Tailwind CSS</span>
+                        <span class="px-3 py-1 rounded-lg bg-gray-900 border border-gray-800 text-blue-300 text-xs">AI Workflows</span>
                     </div>
                 </div>
             </div>
@@ -316,7 +337,7 @@
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="glass-card p-8 rounded-2xl space-y-6">
                     <div class="flex items-center gap-3">
-                        <div class="p-3 rounded-xl bg-blue-500/10 text-blue-400">
+                        <div class="p-3 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
                             <i class="fa-solid fa-cube text-xl"></i>
                         </div>
                         <div>
@@ -331,8 +352,8 @@
                                 <span class="text-gray-300">3D Modeling & Mesh Topology</span>
                                 <span class="text-blue-400">92%</span>
                             </div>
-                            <div class="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 w-[92%]"></div>
+                            <div class="w-full h-2 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
+                                <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 w-[92%] rounded-full"></div>
                             </div>
                         </div>
 
@@ -341,8 +362,8 @@
                                 <span class="text-gray-300">Texturing & Studio Lighting</span>
                                 <span class="text-blue-400">88%</span>
                             </div>
-                            <div class="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 w-[88%]"></div>
+                            <div class="w-full h-2 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
+                                <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 w-[88%] rounded-full"></div>
                             </div>
                         </div>
                     </div>
@@ -350,7 +371,7 @@
 
                 <div class="glass-card p-8 rounded-2xl space-y-6">
                     <div class="flex items-center gap-3">
-                        <div class="p-3 rounded-xl bg-purple-500/10 text-purple-400">
+                        <div class="p-3 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
                             <i class="fa-solid fa-laptop-code text-xl"></i>
                         </div>
                         <div>
@@ -365,8 +386,8 @@
                                 <span class="text-gray-300">Web Development & UI/UX</span>
                                 <span class="text-purple-400">88%</span>
                             </div>
-                            <div class="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 w-[88%]"></div>
+                            <div class="w-full h-2 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
+                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 w-[88%] rounded-full"></div>
                             </div>
                         </div>
 
@@ -375,8 +396,8 @@
                                 <span class="text-gray-300">C++ Programming & AI Integration</span>
                                 <span class="text-purple-400">85%</span>
                             </div>
-                            <div class="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 w-[85%]"></div>
+                            <div class="w-full h-2 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
+                                <div class="h-full bg-gradient-to-r from-purple-500 to-pink-500 w-[85%] rounded-full"></div>
                             </div>
                         </div>
                     </div>
@@ -388,63 +409,47 @@
         <section id="contact" class="space-y-12 pb-20">
             <div class="border-l-4 border-blue-500 pl-4">
                 <h2 class="text-3xl font-bold tracking-tight">Get In Touch</h2>
-                <p class="text-gray-400 text-sm">Let's discuss projects or opportunities</p>
+                <p class="text-gray-400 text-sm">Let's discuss projects, 3D renders, or software opportunities</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-card p-8 rounded-2xl space-y-6 flex flex-col justify-between">
-                    <div class="space-y-4">
-                        <h3 class="text-2xl font-bold text-white">Mohamed Shaban</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Based in Omraniya, Giza, Egypt. Available for freelance 3D product renders, hard-surface asset creation, and software projects.
-                        </p>
-                    </div>
+            <div class="glass-card p-8 sm:p-12 rounded-2xl space-y-8 max-w-3xl mx-auto text-center relative overflow-hidden">
+                <div class="absolute -right-16 -top-16 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                    <div class="space-y-4 text-sm">
-                        <div class="flex items-center gap-4">
-                            <div class="p-3 rounded-xl bg-gray-800 text-blue-400">
-                                <i class="fa-solid fa-envelope"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-400 text-xs">Email</p>
-                                <a href="mailto:mohamedshaban200810@gmail.com" class="font-medium text-white hover:text-blue-400 transition-colors">
-                                    mohamedshaban200810@gmail.com
-                                </a>
-                            </div>
+                <div class="space-y-3 relative z-10">
+                    <h3 class="text-3xl font-extrabold text-white">Mohamed Shaban</h3>
+                    <p class="text-gray-400 text-sm max-w-lg mx-auto leading-relaxed">
+                        Based in Imbaba, Giza, Egypt. Available for freelance 3D product renders, hard-surface asset creation, and custom software projects.
+                    </p>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-6 pt-4 relative z-10">
+                    <a href="mailto:mohamedshaban200810@gmail.com" class="glass-card p-6 rounded-xl flex items-center gap-4 group hover:border-blue-500 transition-all text-left">
+                        <div class="p-3.5 rounded-xl bg-blue-500/10 text-blue-400 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-envelope text-xl"></i>
                         </div>
+                        <div>
+                            <p class="text-gray-400 text-xs font-medium">Direct Email</p>
+                            <p class="text-sm font-semibold text-white truncate max-w-[190px]">mohamedshaban200810@gmail.com</p>
+                        </div>
+                    </a>
 
-                        <div class="flex items-center gap-4">
-                            <div class="p-3 rounded-xl bg-gray-800 text-blue-400">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-400 text-xs">Location</p>
-                                <p class="font-medium text-white">Omraniya, Giza, Egypt</p>
-                            </div>
+                    <div class="glass-card p-6 rounded-xl flex items-center gap-4 text-left">
+                        <div class="p-3.5 rounded-xl bg-purple-500/10 text-purple-400">
+                            <i class="fa-solid fa-location-dot text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-400 text-xs font-medium">Location</p>
+                            <p class="text-sm font-semibold text-white">Imbaba, Giza, Egypt</p>
                         </div>
                     </div>
                 </div>
 
-                <form class="glass-card p-8 rounded-2xl space-y-4" onsubmit="event.preventDefault(); alert('Message Sent Successfully!');">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-1">Your Name</label>
-                        <input type="text" required placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-gray-900/80 border border-gray-800 text-white focus:outline-none focus:border-blue-500 transition-colors text-sm">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-1">Your Email</label>
-                        <input type="email" required placeholder="john@example.com" class="w-full px-4 py-3 rounded-xl bg-gray-900/80 border border-gray-800 text-white focus:outline-none focus:border-blue-500 transition-colors text-sm">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 mb-1">Message</label>
-                        <textarea rows="4" required placeholder="Hello Mohamed, I would like to discuss..." class="w-full px-4 py-3 rounded-xl bg-gray-900/80 border border-gray-800 text-white focus:outline-none focus:border-blue-500 transition-colors text-sm resize-none"></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-600/30">
-                        Send Message
-                    </button>
-                </form>
+                <div class="pt-4 flex justify-center gap-4 relative z-10">
+                    <a href="mailto:mohamedshaban200810@gmail.com" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-600/30 flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Send Email
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -547,7 +552,7 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- JavaScript Logic & Particle Network Animation -->
     <script>
         const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
         const dot = document.getElementById('cursor-dot');
@@ -562,13 +567,29 @@
                 outline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 150, fill: "forwards" });
             });
 
-            document.querySelectorAll('a, button, input, textarea, .glass-card').forEach(el => {
+            document.querySelectorAll('a, button, .glass-card').forEach(el => {
                 el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
                 el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
             });
         }
 
-        // Particle Canvas Optimization
+        // Modal Controls
+        const modal = document.getElementById('project-modal');
+        function openModal() {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Interactive Particle Constellation Background Script
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -579,56 +600,78 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        const particleCount = isMobile ? 10 : 16;
-        const particles = Array.from({ length: particleCount }, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.2,
-            vy: (Math.random() - 0.5) * 0.2,
-            radius: Math.random() * 1.5 + 1
-        }));
+        let mouse = { x: null, y: null, radius: 150 };
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        const particles = [];
+        const particleCount = Math.floor(window.innerWidth * window.innerHeight / 12000);
+
+        for (let i = 0; i < (particleCount < 40 ? 40 : particleCount); i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.8,
+                vy: (Math.random() - 0.5) * 0.8,
+                radius: Math.random() * 1.8 + 1
+            });
+        }
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(59, 130, 246, 0.25)';
-            ctx.strokeStyle = 'rgba(59, 130, 246, 0.04)';
 
-            particles.forEach((p, i) => {
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
                 p.x += p.vx;
                 p.y += p.vy;
 
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
+                // Mouse interactivity attraction/repulsion effect
+                if (mouse.x !== null && mouse.y !== null) {
+                    let dx = mouse.x - p.x;
+                    let dy = mouse.y - p.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius) {
+                        let angle = Math.atan2(dy, dx);
+                        p.x -= Math.cos(angle) * 0.6;
+                        p.y -= Math.sin(angle) * 0.6;
+                    }
+                }
+
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.55)';
                 ctx.fill();
 
+                // Connect nearby particles with lines
                 for (let j = i + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if (dist < 100) {
+                    let p2 = particles[j];
+                    let dx = p.x - p2.x;
+                    let dy = p.y - p2.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 130) {
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(59, 130, 246, ${0.22 * (1 - dist / 130)})`;
+                        ctx.lineWidth = 0.8;
                         ctx.stroke();
                     }
                 }
-            });
-
+            }
             requestAnimationFrame(animateParticles);
         }
+
         animateParticles();
-
-        function openModal() {
-            document.getElementById('project-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('project-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
     </script>
 </body>
 </html>
